@@ -35,10 +35,10 @@ jobs:
     - name: process and upload coverage data
       run: |
         cd build
-        lcov --capture --directory . --output-file coverage.info
-        lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused
-        lcov --remove coverage.info '/Applications/Xcode.app/*' --output-file coverage.info --ignore-errors unused
-        lcov --list coverage.info
+        lcov --capture --directory . --output-file coverage.info --ignore-errors unsupported,unsupported,inconsistent,format,format
+        lcov --remove coverage.info '/usr/*' --output-file coverage.info --ignore-errors unused,inconsistent,format
+        lcov --remove coverage.info '/Applications/Xcode*.app/*' --output-file coverage.info --ignore-errors unused,inconsistent,format
+        lcov --list coverage.info --ignore-errors inconsistent
         bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
     - uses: actions/upload-artifact@v7
       with:
