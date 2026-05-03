@@ -84,18 +84,18 @@ test( const char* inTestName, const char* inArgument )
 		} else if (::strcmp(inTestName, "ns-catenatestrings") == 0) {
 			UTestNS::CatenateStrings();
 		} else if (::strcmp(inTestName, "ns-references-debugstr") == 0) {
-			// Sur Mac, on appelle DebugStr ce qui a un certain résultat ...
-#if !TARGET_OS_MAC
-	(void) ::printf( "Test non disponible pour cette plateforme\n" );
-#else
+			// Sur Mac (classique, sans POSIX), on appelle DebugStr ce qui a un certain résultat ...
+#if TARGET_OS_MAC && !TARGET_OS_COMPAT_POSIX
 			UTestNS::References();
+#else
+	(void) ::printf( "Test non disponible pour cette plateforme\n" );
 #endif
 		} else if (::strcmp(inTestName, "ns-references-kill") == 0) {
 			// ... différent de celui qu'on a si on appelle kill avec SIGINT.
-#if TARGET_OS_MAC
-	(void) ::printf( "Test non disponible pour cette plateforme\n" );
-#else
+#if !TARGET_OS_MAC || TARGET_OS_COMPAT_POSIX
 			UTestNS::References();
+#else
+	(void) ::printf( "Test non disponible pour cette plateforme\n" );
 #endif
 		} else if (::strcmp(inTestName, "nsof-waltersmith") == 0) {
 			UTestNSOF::WalterSmith();
