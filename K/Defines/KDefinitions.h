@@ -115,20 +115,20 @@
 
 #define TARGET_OS_UNDEFINED 1
 
-#if TARGET_OS_OPENSTEP_PPC
+#if defined(TARGET_OS_OPENSTEP_PPC) && TARGET_OS_OPENSTEP_PPC
 	#define	TARGET_OS_OPENSTEP 1
 #endif
 
-#if TARGET_OS_OPENSTEP_I386
+#if defined(TARGET_OS_OPENSTEP_I386) && TARGET_OS_OPENSTEP_I386
 	#define	TARGET_OS_OPENSTEP 1
 #endif
 
-#if DARWIN
+#if DARWIN || TARGET_OS_OSX
     #define TARGET_OS_OPENSTEP 1
 #endif
 
-#if TARGET_OS_MACOS
-	#define TARGET_OS_MAC 1
+#if defined(TARGET_OS_MACOS) && TARGET_OS_MACOS
+#define TARGET_OS_MAC 1
 	#define TARGET_API_MAC_OS8 1
 #endif
 
@@ -168,7 +168,7 @@
 	#endif
 #endif
 
-#if TARGET_OS_NEWTON
+#if defined(TARGET_OS_NEWTON) && TARGET_OS_NEWTON
 	#define TARGET_OS_BEOS 0
 	#define TARGET_OS_MACOS 0
 	#define TARGET_OS_OPENSTEP 0
@@ -218,7 +218,7 @@
 #endif
 
 #if TARGET_OS_MAC
-	#if TARGET_OS_MACOS
+	#if defined(TARGET_OS_MACOS) && TARGET_OS_MACOS
 		#include <ConditionalMacros.h>
 	#endif
 	#if TARGET_OS_OPENSTEP
@@ -233,14 +233,15 @@
 		#endif
 	#endif
 	
-	#if TARGET_API_MAC_OSX
+	#if (TARGET_API_MAC_OSX || TARGET_OS_OSX)
 		#define TARGET_OS_BEOS 0
 		#define TARGET_OS_BSD 0
 		#define TARGET_OS_LINUX 0
 		#define TARGET_OS_MACOS 0
 		#define TARGET_OS_NEWTON 0
 		#define TARGET_OS_OPENSTEP 1
-		#define TARGET_OS_POSIX 0
+		#undef TARGET_OS_POSIX
+	  #define TARGET_OS_POSIX 0
 		#define TARGET_OS_WIN32	0
 		#define TARGET_OS_CYGWIN 0
 		#define TARGET_OS_COMPAT_POSIX 1
@@ -251,20 +252,28 @@
 			#define TARGET_OS_OPENSTEP_PPC 1
 			#define TARGET_OS_OPENSTEP_I386 0
 			#define TARGET_OS_OPENSTEP_AMD64 0
+			#define TARGET_OS_OPENSTEP_ARM64 0
 		#elif defined (__i386__)
 			#define TARGET_OS_OPENSTEP_PPC 0
 			#define TARGET_OS_OPENSTEP_I386 1
 			#define TARGET_OS_OPENSTEP_AMD64 0
-		#elif defined (__amd64__)
+			#define TARGET_OS_OPENSTEP_ARM64 0
+		#elif defined (__amd64__) || defined (__x86_64__)
 			#define TARGET_OS_OPENSTEP_PPC 0
 			#define TARGET_OS_OPENSTEP_I386 0
 			#define TARGET_OS_OPENSTEP_AMD64 1
+			#define TARGET_OS_OPENSTEP_ARM64 0
+		#elif defined (__arm64__) || defined (__aarch64__)
+			#define TARGET_OS_OPENSTEP_PPC 0
+			#define TARGET_OS_OPENSTEP_I386 0
+			#define TARGET_OS_OPENSTEP_AMD64 0
+			#define TARGET_OS_OPENSTEP_ARM64 1
 		#else
 			#error "Unknown MacOS X architecture"
 		#endif
 
 		// The superior x86 is 32 bits.
-		#if defined(__ppc64__) || defined (__amd64__)
+		#if defined(__ppc64__) || defined (__amd64__) || defined(__x86_64__) || defined(__arm64__) || defined(__aarch64__)
 			#define KUIntPtr	KUInt64
 		#else
 			#define KUIntPtr	KUInt32
@@ -514,7 +523,7 @@
 	#endif
 #endif
 
-#if TARGET_OS_POSIX
+#if defined(TARGET_OS_POSIX) && TARGET_OS_POSIX
 	#define TARGET_OS_BEOS 0
 	#define TARGET_OS_BSD 0
 	#define TARGET_OS_LINUX 0

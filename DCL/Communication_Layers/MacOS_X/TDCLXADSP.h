@@ -49,6 +49,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
+#if TARGET_OS_OPENSTEP && !TARGET_OS_OPENSTEP_AMD64 && !TARGET_OS_OPENSTEP_ARM64
+	#define	TARGET_HAS_XADSP 1
+#else
+	#define	TARGET_HAS_XADSP 0
+#endif
+
+#if TARGET_HAS_XADSP
 // AppleTalk dans Kernel.Framework
 #include <netat/appletalk.h>
 #include <netat/atp.h>
@@ -58,6 +65,7 @@
 extern "C" {
 #include "at_proto.h"
 }
+#endif
 
 #ifdef __MWERKS__
 	#pragma	warn_resultnotused	on
@@ -65,8 +73,8 @@ extern "C" {
 	#pragma	warn_extracomma		reset
 #endif
 
-#if !TARGET_OS_OPENSTEP
-	#error "X ADSP n'est disponible que sur OS X"
+#if !TARGET_HAS_XADSP
+	#error "X ADSP n'est disponible que sur OS X (PPC/i386 legacy)"
 #endif
 
 ///
