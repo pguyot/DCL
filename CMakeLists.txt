@@ -368,11 +368,6 @@ K/Crypto/U3DES.h
 K/Crypto/UDES.h
 K/Defines/KDefinitions.h
 K/Defines/UByteSex.h
-K/Exceptions/Errors/TError.h
-K/Exceptions/Errors/TMemError.h
-K/Exceptions/IO/TEOFException.h
-K/Exceptions/IO/TIOException.h
-K/Exceptions/TException.h
 K/Math/TInt64.h
 K/Math/TSInt64.h
 K/Math/TUInt64.h
@@ -411,9 +406,9 @@ add_subdirectory (Sample_Code/NSOFtoXML)
 add_subdirectory (Sample_Code/PackageUtils)
 add_subdirectory (Tests)
 
-foreach(HEADER ${HEADERS})
+foreach(HEADER ${DCL_HEADERS})
    string(REGEX MATCH "(.*)[/\\]" DIR ${HEADER})
    install(FILES ${HEADER} DESTINATION include/${DIR})
-endforeach(HEADER ${HEADERS})
+endforeach()
 
 install(TARGETS DCL LIBRARY DESTINATION lib)
